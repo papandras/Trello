@@ -1,0 +1,18 @@
+#form_regisztracio{
+    display: none;
+}
+
+body{
+    background-image: linear-gradient(to right, red, black);
+    user-select: none;
+}
+
+.nav{
+    background-color: black;
+    color: white;
+}
+
+form{
+    color: white;
+    font-weight: bold;
+}
