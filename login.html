@@ -36,6 +36,11 @@
         </div>
     </nav>
     <div class="container my-5 py-5">
+        <div class="alert alert-warning">
+            <h5 class="mb-3">Üzenet</h5>
+            <p></p>
+            <a href="#" class="btn btn-dark" onclick="bezaras()">Bezárás</a>
+        </div>
         <div class="row bg-dark p-5 rounded-pill border border-light">
             <div class="col-6 offset-3" id="form_bejelentkezes">
                 <form method="POST" onsubmit="return submit_bejelentkezes()" name="form_bejelentkezes">
@@ -47,7 +52,7 @@
                 </form>
             </div>
             <div class="col-6 offset-3" id="form_regisztracio">
-                <form method="POST">
+                <form method="POST" onsubmit="return submit_regisztracio()" name="form_regisztracio">
                     <label for="email_regisztracio" class="form-label">E-mail cím</label>
                     <input type="text" name="email_regisztracio" id="email_regisztracio" class="form-control" required>
                     <label for="felhasznalonev_regisztracio" class="form-label">Felhasználónév</label>

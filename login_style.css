@@ -16,3 +16,16 @@ form{
     color: white;
     font-weight: bold;
 }
+
+.alert{
+    display: none;
+    width: 400px;
+    height: 150px;
+    text-align: center;
+    font-weight: bold;
+    position: fixed;
+    top: 200px;
+    left: 40%;
+    border: 2px solid darkred;
+    box-shadow: 0 0 5px 5px darkred;
+}

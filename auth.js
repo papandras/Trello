@@ -5,7 +5,8 @@ let users = {
         name: "admin",
         password: "admin",
         email: "admin@gmail.com",
+        regdate: "infinity",
     },
 }
 
-localStorage.setItem("users", JSON.stringify(users));
+//localStorage.setItem("users", JSON.stringify(users));
