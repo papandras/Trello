@@ -4,6 +4,9 @@ if (JSON.parse(localStorage.getItem("auth")) == null) {
 
 if (JSON.parse(localStorage.getItem("auth")) == false) {
     document.location.assign("login.html");
+	
+if(JSON.parse(localStorage.getItem("auth")) == false){
+    //document.location.assign("login.html");
 }
 
 function kijelentkezes() {

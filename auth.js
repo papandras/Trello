@@ -1,5 +1,5 @@
 let auth = false;
-
+//localStorage.clear();
 let users = {
     0 : {
         name: "admin",
