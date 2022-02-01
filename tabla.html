@@ -28,10 +28,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Főoldal</a>
+                        <a class="nav-link" aria-current="page" href="index.html">Főoldal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="tabla.html">Tábláim</a>
+                        <a class="nav-link" href="tabla.html active">Tábláim</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -57,11 +57,11 @@
     </nav>
     <div class="container my-5 py-5 bg-dark rounded-3 text-light">
         <div class="row">
-            <div class="col-6 offset-3 text-center">
-                <h1>Üdv!</h1>
+            <div class="col-3 offset-3 text-center" id="main-container">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="button" placeholder="Táblanév" aria-label="Uj tábla" onclick="newtable()">
+                </form>
             </div>
         </div>
     </div>
 </body>
-
-</html>

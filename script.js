@@ -3,7 +3,7 @@ if(JSON.parse(localStorage.getItem("auth")) == null){
 }
 
 if(JSON.parse(localStorage.getItem("auth")) == false){
-    document.location.assign("login.html");
+    //document.location.assign("login.html");
 }
 
 function kijelentkezes(){
