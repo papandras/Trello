@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="auth.js"></script>
     <script src="script.js"></script>
+    
     <link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
 </head>
 
@@ -31,7 +32,7 @@
                         <a class="nav-link" aria-current="page" href="index.html">Főoldal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="tabla.html active">Tábláim</a>
+                        <a class="nav-link" href="tabla.html" active>Tábláim</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -55,13 +56,19 @@
             </div>
         </div>
     </nav>
-    <div class="container my-5 py-5 bg-dark rounded-3 text-light">
-        <div class="row">
-            <div class="col-3 offset-3 text-center" id="main-container">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="button" placeholder="Táblanév" aria-label="Uj tábla" onclick="newtable()">
-                </form>
+    <template>
+        <div class="card col-4 mx-5" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <p class="card-text" id="cim"></p>
+                <a href="#" class="btn btn-primary">Megnyitás</a>
             </div>
         </div>
+    </template>
+    <div class="container my-5 py-5 bg-dark rounded-3 text-light">
+        <div class="row" id="main-container">
+        </div>
     </div>
+    <script src="tablak.js"></script>
 </body>

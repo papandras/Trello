@@ -58,7 +58,13 @@
     <div class="container my-5 py-5 bg-dark rounded-3 text-light">
         <div class="row">
             <div class="col-6 offset-3 text-center">
-                <h1>Üdv!</h1>
+                <form>
+                    <label for="key" class="form-label">Add meg a trello kulcsodat!</label>
+                    <input type="text" name="key" id="key" class="form-control">
+                    <label for="token" class="form-label">Add meg a trello tokened!</label>
+                    <input type="text" name="token" id="token" class="form-control">
+                    <input type="button" value="Mentés" class="form-control btn btn-primary my-2" onclick="addKeyToken()">
+                </form>
             </div>
         </div>
     </div>
