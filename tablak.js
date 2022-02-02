@@ -4,8 +4,10 @@ async function getBoards() {
 
     let template = document.getElementsByTagName("template")[0].content;
     for (let tabla of Object.values(data)) {
+        console.log(tabla);
         card = document.importNode(template, true);
         card.querySelector("h5").innerText = tabla.name;
+        card.querySelector("p").innerText += tabla.dateLastActivity.slice(0,10);
         document.getElementById("main-container").appendChild(card);
     }
 }
