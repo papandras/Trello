@@ -34,10 +34,13 @@ function submit_bejelentkezes() {
 function submit_regisztracio() {
     if (document.getElementById("jelszo_regisztracio").value === document.getElementById("jelszo_megerosit_regisztracio").value) {
         let newuser = {
+            id: Object.keys(users).length,
             name: document.getElementById("felhasznalonev_regisztracio").value,
             password: document.getElementById("jelszo_regisztracio").value,
             email: document.getElementById("email_regisztracio").value,
             regdate: Date.now(),
+            key: null,
+            token: null,
         }
         users[Object.keys(users).length] = newuser;
         let i = 0;
@@ -50,7 +53,7 @@ function submit_regisztracio() {
         document.getElementsByClassName("alert")[0].getElementsByTagName("p")[0].textContent = "Sikeres regisztráció!";
         document.getElementsByClassName("alert")[0].style.display = "block";
     }
-    else{
+    else {
         document.getElementsByClassName("alert")[0].getElementsByTagName("p")[0].textContent = "A jelszavak nem egyeznek!";
         document.getElementsByClassName("alert")[0].style.display = "block";
     }

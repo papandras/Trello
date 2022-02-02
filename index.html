@@ -12,7 +12,6 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <script src="auth.js"></script>
-    <script src="script.js"></script>
     <link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
 </head>
 
@@ -58,16 +57,29 @@
     <div class="container my-5 py-5 bg-dark rounded-3 text-light">
         <div class="row">
             <div class="col-6 offset-3 text-center">
-                <form>
-                    <label for="key" class="form-label">Add meg a trello kulcsodat!</label>
+                <div class="alert alert-warning alertPopup">
+                    <h5 class="mb-3">Üzenet</h5>
+                    <p></p>
+                    <a href="#" class="btn btn-dark" onclick="bezaras()">Bezárás</a>
+                </div>
+                <form class="form">
+                    <label for="key" class="form-label">Add meg a trello <b>kulcsodat</b>!</label>
                     <input type="text" name="key" id="key" class="form-control">
-                    <label for="token" class="form-label">Add meg a trello tokened!</label>
+                    <label for="token" class="form-label">Add meg a trello <b>tokened</b>!</label>
                     <input type="text" name="token" id="token" class="form-control">
                     <input type="button" value="Mentés" class="form-control btn btn-primary my-2" onclick="addKeyToken()">
                 </form>
+                <div class="keytokenexist">
+                    <div class="alert alert-success">
+                        <h5 class="mb-3">Kulcs és token sikeresen megadva!</h5>
+                        <p>Nincs semmi teendőd</p>
+                        <a href="tabla.html" class="btn btn-dark" onclick="bezaras()">Tovább a táblákhoz</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-let date, loggeduser = JSON.parse(localStorage.getItem("loggeduser"));
+let date;
 
 if(typeof(loggeduser.regdate) != "string"){
     date = new Date(loggeduser.regdate).toISOString().slice(0,10);

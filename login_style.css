@@ -17,7 +17,7 @@ form{
     font-weight: bold;
 }
 
-.alert{
+.alertPopup{
     display: none;
     width: 400px;
     height: 150px;
@@ -28,4 +28,8 @@ form{
     left: 40%;
     border: 2px solid darkred;
     box-shadow: 0 0 5px 5px darkred;
+}
+
+.alert-success{
+    display: none;
 }
