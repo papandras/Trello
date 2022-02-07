@@ -1,4 +1,9 @@
-//localStorage.clear();
+/**
+ * Első betöltésnél admin  felhasználó létrehozása és eltárolása
+ * @counter - csak arra kell hogy számolja a belépéseket a fenti okból
+ * @auth - be van-e lépve valaki
+ * @users - felhasználók eltárolása
+ */
 if (JSON.parse(localStorage.getItem("counter")) == null) {
     localStorage.setItem("counter", 0);
 }
