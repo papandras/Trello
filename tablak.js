@@ -32,7 +32,9 @@ if (loggeduser.key == null && loggeduser.token == null) {
 }
 
 async function deleteBoard(id) {
-    //
+    await fetch('https://api.trello.com/1/boards/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
+        method: 'DELETE'
+    })
 }
 
 async function createBoard(name) {
