@@ -63,40 +63,65 @@
                 <h5 class="card-title"></h5>
                 <p class="card-text text-dark" id="cim">Utolsó módosítás: </p>
                 <div class="buttons">
-                    <a href="#" class="my-1 btn btn-primary open" onclick="openBoard(this.id, this)" id="open">Megnyitás</a>
-                    <a href="#" class="my-1 btn btn-success" onclick="editBoardDialog(this.id)" id="edit">Szerkesztés</a>
-                    <a href="#" class="d-block my-1 btn btn-danger" onclick="deleteBoard(this.id)" id="delete">Törlés</a>
+                    <a href="#" class="my-1 btn btn-primary open" onclick="openBoard(this.id, this)"
+                        id="open">Megnyitás</a>
+                    <a href="#" class="my-1 btn btn-success" onclick="editBoardDialog(this.id)"
+                        id="edit">Szerkesztés</a>
+                    <a href="#" class="d-block my-1 btn btn-danger" onclick="deleteDialog(this.id)"
+                        id="delete">Törlés</a>
                 </div>
             </div>
         </div>
     </template>
-    <div class="container my-5 py-5 bg-dark rounded-3 text-light">
-        <div class="row text-center" id="main-container">
-            <div class="alert alert-success col col-6 offset-3 text-center">
+    <div class="container my-5 py-5 bg-dark rounded-3 text-light" id="main">
+        <div class="row">
+            <!--Figyelmezető ablak: hiányhó kulcs/token-->
+            <div class="alert col col-6 offset-3 text-center alertPopup">
                 <h5 class="mb-3">Kulcs vagy token nem lett megadva!</h5>
                 <p></p>
                 <a href="index.html" class="btn btn-dark" onclick="bezaras()">Vissza a megadáshoz!</a>
-
             </div>
-        </div>
-        <div class="row text-center">
-            <a href="#" onclick="boardname()" class="btn btn-primary w-25 mx-auto my-3">Tábla létrehozása</a>
+            <!--Figyelmezető ablak: hiányhó kulcs/token-->
 
+            <!--Megerősítés ablak: törlés-->
+            <div class="alert alert-danger col col-6 offset-3 text-center">
+                <h5 class="mb-3">Biztosan törli?</h5>
+                <p><br></p>
+                <a href="#" class="btn btn-danger" onclick="deleteBoard(this.id)">Törlés</a>
+                <a href="#" class="btn border-dark" onclick="deleteDialogClose()">Mégse</a>
+            </div>
+            <!--Megerősítés ablak: törlés-->
+
+            <!--Tábla létrehozása-->
             <div class="alert alert-info col col-6 offset-3 text-center">
                 <h5 class="mb-3">Add meg a tábla nevét!</h5>
                 <p><br></p>
-                <input type="text" id="name" class="form-control my-2">
+                <input type="text" id="nameCreate" class="form-control my-2">
                 <a href="#" class="btn btn-dark" onclick="saveboardname()">Létrehoz</a>
                 <a href="#" class="btn border-dark" onclick="closesaveboardname()">Mégse</a>
-
             </div>
+            <!--Tábla létrehozása-->
+
+            <!--Tábla módosítása-->
+            <div class="alert alert-success col col-6 offset-3 text-center">
+                <h5 class="mb-3">Add meg a tábla új nevét!</h5>
+                <p><br></p>
+                <input type="text" id="nameEdit" class="form-control my-2">
+                <a href="#" class="btn btn-dark" onclick="editBoard()">Módosít</a>
+                <a href="#" class="btn border-dark" onclick="closeEditBoard()">Mégse</a>
+            </div>
+            <!--Tábla módosítása-->
+        </div>
+        <div class="row text-center" id="main-container">
         </div>
         <div id="lists">
             <div class="row">
 
             </div>
         </div>
+        <div class="row">
+            <a href="#" onclick="boardname()" class="btn btn-primary w-25 mx-auto my-3">Tábla létrehozása</a>
+        </div>
     </div>
     <script src="tablak.js"></script>
-    <script src="tablaAdat.js"></script>
 </body>

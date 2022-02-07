@@ -15,6 +15,7 @@ async function getBoards() {
     let template = document.getElementsByTagName("template")[0].content;
     for (let tabla of Object.values(data)) {
         card = document.importNode(template, true);
+        //card.style.backgroundColor = tabla.prefs.backgroundColor;
         card.querySelector("h5").innerText = tabla.name;
         card.getElementById("delete").id = tabla.id;
         card.getElementById("edit").id = tabla.id;
@@ -26,30 +27,56 @@ async function getBoards() {
             card.querySelector("p").innerText += "-";
         }
         document.getElementById("main-container").appendChild(card);
+        if (tabla.prefs.backgroundColor != null) {
+            document.getElementById("main-container").getElementsByClassName("card")[document.getElementsByClassName("card").length - 1].style.backgroundColor = tabla.prefs.backgroundColor;
+        } else {
+            document.getElementById("main-container").getElementsByClassName("card")[document.getElementsByClassName("card").length - 1].style.backgroundImage = `url(${tabla.prefs.backgroundImage})`;
+        }
+
     }
 }
 
 /**
- * Tábla törlése
+ * Tábla törlése dialog
  */
 
+function deleteDialog(id) {
+    document.getElementsByClassName("alert-danger")[0].style.display = "block";
+    document.getElementsByClassName("btn-danger")[0].setAttribute("id", id);
+
+}
+
+/**
+ * Tábla törlése dialog bezárása
+ */
+
+function deleteDialogClose() {
+    document.getElementsByClassName("alert-danger")[0].style.display = "none";
+}
+
+/**
+ * Tábla törlése
+ * @param {*} id 
+ */
 async function deleteBoard(id) {
+    document.getElementsByClassName("alert-danger")[0].style.display = "none";
     await fetch('https://api.trello.com/1/boards/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
         method: 'DELETE'
     })
         .then(response => {
             console.log(
-            `Response: ${response.status} ${response.statusText}`
-        );
-        return response.text();
-    })
-    .then(text => console.log(text))
-    .catch(err => console.error(err));
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
     getBoards();
 }
 
 /**
  * Tábla létrehozása
+ * @param {*} name 
  */
 
 async function createBoard(name) {
@@ -73,7 +100,7 @@ async function createBoard(name) {
 
 function boardname() {
     document.getElementsByClassName("alert-info")[0].style.display = "block";
-    document.getElementsByClassName("alert-info")[0].classList.add("typeBoardName");
+    //document.getElementsByClassName("alert-info")[0].classList.add("typeBoardName");
 }
 
 /**
@@ -81,10 +108,10 @@ function boardname() {
  */
 
 function saveboardname() {
-    if (document.getElementById("name").value != "") {
+    if (document.getElementById("nameCreate").value != "") {
         document.getElementsByClassName("alert-info")[0].style.display = "none";
-        createBoard(document.getElementById("name").value);
-        document.getElementById("name").value = null;
+        createBoard(document.getElementById("nameCreate").value);
+        document.getElementById("nameCreate").value = null;
         document.getElementsByClassName("alert-info")[0].getElementsByTagName("p")[0].innerHTML = "<br>";
     } else {
         document.getElementsByClassName("alert-info")[0].getElementsByTagName("p")[0].innerHTML = "Add meg a kívánt nevet!";
@@ -97,19 +124,56 @@ function saveboardname() {
 
 function closesaveboardname() {
     document.getElementsByClassName("alert-info")[0].style.display = "none";
-    document.getElementById("name").value = null;
+    document.getElementById("nameCreate").value = null;
 }
 
-function editBoardDialog() {
+/**
+ * Megnyitott tábla bezárása
+ */
 
+function boardClose() {
+    document.querySelector("#lists").style.display = "none";
+}
+
+function editBoardDialog(id) {
+    document.querySelector(".alert-success").style.display = "block";
+    document.querySelector(".alert-success").setAttribute("id", id);
 }
 
 async function editBoard() {
+    const data = { name: document.getElementById("nameEdit").value };
 
+    let id = document.querySelector(".alert-success").id;
+    document.querySelector(".alert-success").style.display = "none";
+
+    await fetch('https://api.trello.com/1/boards/' + id + `?key=${loggeduser.key}&token=${loggeduser.token}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+    getBoards();
+    document.getElementById("nameEdit").value = "";
+}
+
+function closeEditBoard() {
+    document.querySelector(".alert-success").style.display = "none";
+    document.getElementById("nameEdit").value = "";
 }
 
 /**
  * Tábla megnyitása
+ * @param {*} id 
+ * @param {*} thiselement 
  */
 
 async function openBoard(id, thiselement) {
@@ -136,20 +200,29 @@ async function openBoard(id, thiselement) {
 
 /**
  * Tábla megjelenítése
+ * @param {*} data 
+ * @param {*} title 
  */
 
 function megjelenit(data, title) {
     let container = document.querySelector("#lists>.row");
+    container.innerHTML = null;
     document.querySelector("#lists").style.display = "block";
 
     let h1 = document.createElement("h1");
     h1.classList.add("text-center", "text-dark");
     h1.innerHTML = title;
     container.appendChild(h1);
+    container.appendChild(document.createElement("hr"));
     let listIndex = 0;
+    console.log(Math.round(12 / data.length));
+    let colcount = Math.round(12 / data.length);
+    if (colcount < 3) {
+        colcount = 3;
+    }
     data.forEach(list => {
         let col = document.createElement("div");
-        col.classList.add("col");
+        col.classList.add("col", `col-${colcount}`);
         let div = document.createElement("div");
         let h2 = document.createElement("h2");
         h2.innerHTML = list.name;
@@ -162,13 +235,28 @@ function megjelenit(data, title) {
         fetch(`https://api.trello.com/1/lists/` + list.id + `/cards?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => cards(data, col));
         listIndex += 1;
     });
+    closeButton = document.createElement("a");
+    closeButton.href = "#";
+    closeButton.classList.add("btn", "btn-primary", "d-block", "col-2", "offset-10", "my-3");
+    closeButton.style.width = "200px";
+    closeButton.style.display = "block";
+    closeButton.innerHTML = "Bezárás";
+    closeButton.setAttribute("onclick", "boardClose()");
+    let buttonrow = document.createElement("div");
+    buttonrow.classList.add("row", "text-center");
+    buttonrow.appendChild(closeButton);
+
+    container.appendChild(buttonrow);
 }
 
 /**
  * Kártyák megjelenítése
+ * @param {*} data 
+ * @param {*} list 
  */
 
 function cards(data, list) {
+    let index = 0;
     data.forEach(card => {
         console.log(card);
         let div = document.createElement("div");
@@ -178,5 +266,12 @@ function cards(data, list) {
         text.style.margin = "10px";
         div.appendChild(text);
         list.appendChild(div);
+        if (index == 0) {
+            div.classList.add("elsoKartya");
+        }
+        if (index == data.length - 1) {
+            div.classList.add("utolsoKartya");
+        }
+        ++index;
     });
 }
