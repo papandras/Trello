@@ -6,9 +6,13 @@ async function getBoards() {
     for (let tabla of Object.values(data)) {
         console.log(tabla);
         card = document.importNode(template, true);
+        card.getElementById("megnyitas").id = tabla.id;
         card.querySelector("h5").innerText = tabla.name;
         card.querySelector("p").innerText += tabla.dateLastActivity.slice(0,10);
         document.getElementById("main-container").appendChild(card);
+    }
+    for(let i = 0; i < document.getElementsByClassName("megnyitas").length; ++i){
+        document.getElementsByClassName("megnyitas")[i].setAttribute("href", "tablaAdat.html?id="+document.getElementsByClassName("megnyitas")[i].id);
     }
 }
 

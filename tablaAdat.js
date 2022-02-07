@@ -1,8 +1,10 @@
-const params = new URLSearchParams(window.location.search)
-const tableId = params.get("id");
-fetch(`https://api.trello.com/1/boards/` + tableId + `/lists?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => megnyitas(data));
+function megnyitas(id){
+    document.location = "tablaAdat.html?id="+id;
+    fetch(`https://api.trello.com/1/boards/` + id + `/lists?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => megnyitas(data));
+    megjelenit(data);
+}
 
-function megnyitas(data){
+function megjelenit(data){
     let container = document.querySelector(".row");
     let listIndex = 0;
     data.forEach(list => {
