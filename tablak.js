@@ -168,3 +168,19 @@ function cards(data, list) {
         list.appendChild(div);
     });
 }
+
+
+async function updateBoard(name) {
+    await fetch('https://api.trello.com/1/boards/?name=' + name + '&key=' + loggeduser.key + '&token=' + loggeduser.token, {
+        method: 'UPDATE'
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+    getBoards();
+}
