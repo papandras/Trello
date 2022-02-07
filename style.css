@@ -21,10 +21,44 @@ h5{
     z-index: 9;
 }
 
-.alert-success{
+.typeBoardName{
+    width: 400px;
+    height: 200px;
+    text-align: center;
+    font-weight: bold;
+    position: fixed;
+    top: 200px;
+    border: 2px solid blue;
+}
+
+.alert-success, .alert-info{
     display: none;
 }
 
 .form{
     display: none;
+}
+
+.card-body{
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+.buttons{
+    position: absolute;
+    bottom: 10px;
+}
+
+#lists{
+    display: none;
+    padding: 20px;
+    position: absolute; 
+    top: 100px;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 80%;
+    background-color: white;
+    border: 2px solid black;
 }

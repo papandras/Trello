@@ -39,7 +39,6 @@ function addKeyToken() {
 
         addkeytokentothisuser.key = key;
         addkeytokentothisuser.token = token;
-        //console.log(addkeytokentothisuser);
 
         alluser = JSON.parse(localStorage.getItem("users"));
         alluser[addkeytokentothisuser.id] = addkeytokentothisuser;
