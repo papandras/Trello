@@ -1,3 +1,8 @@
+/**
+ * Profil adatainak kitöltése
+ * @date - regisztráció dátuma
+ */
+
 let date;
 
 if(typeof(loggeduser.regdate) != "string"){

@@ -1,14 +1,25 @@
 localStorage.setItem("auth", false);
 let loggeduser = null;
 
-function navbar_bejelentkezes() {
-    document.getElementById("form_bejelentkezes").style.display = "block";
-    document.getElementById("form_regisztracio").style.display = "none";
+/**
+ * Bejelentkezés / regisztráció form megjelenése
+ */
+
+{
+    function navbar_bejelentkezes() {
+        document.getElementById("form_bejelentkezes").style.display = "block";
+        document.getElementById("form_regisztracio").style.display = "none";
+    }
+    function navbar_regisztracio() {
+        document.getElementById("form_bejelentkezes").style.display = "none";
+        document.getElementById("form_regisztracio").style.display = "block";
+    }
 }
-function navbar_regisztracio() {
-    document.getElementById("form_bejelentkezes").style.display = "none";
-    document.getElementById("form_regisztracio").style.display = "block";
-}
+
+/**
+ * Bejelentkezés submit esemény
+ * @valid - létező felhasználónév-jelszó páros vizsgálata
+ */
 
 function submit_bejelentkezes() {
     let valid = false;
@@ -30,6 +41,12 @@ function submit_bejelentkezes() {
     }
     return false;
 }
+
+/**
+ * Regisztráció submit esemény
+ * @users - összes felhasználók
+ * @newuser - új felhasználó
+ */
 
 function submit_regisztracio() {
     if (document.getElementById("jelszo_regisztracio").value === document.getElementById("jelszo_megerosit_regisztracio").value) {

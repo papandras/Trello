@@ -1,3 +1,12 @@
+if (loggeduser.key == null && loggeduser.token == null) {
+    document.getElementById("main-container").style.display = "block";
+    document.getElementsByClassName("alert-success")[0].style.display = "block";
+}
+
+/**
+ * Táblák lekérése
+ */
+
 async function getBoards() {
     let response = await fetch("https://api.trello.com/1/members/me/boards?key=" + loggeduser.key + "&token=" + loggeduser.token);
     let data = await response.json();
@@ -18,18 +27,11 @@ async function getBoards() {
         }
         document.getElementById("main-container").appendChild(card);
     }
-
-    //for (let i = 0; i < document.getElementsByClassName("open").length; i++) {
-    //    document.getElementsByClassName("open")[i].setAttribute("href", "tablaAdat.html?id=" + document.getElementsByClassName("open")[i].id)
-    //}
 }
 
-getBoards();
-
-if (loggeduser.key == null && loggeduser.token == null) {
-    document.getElementById("main-container").style.display = "block";
-    document.getElementsByClassName("alert-success")[0].style.display = "block";
-}
+/**
+ * Tábla törlése
+ */
 
 async function deleteBoard(id) {
     await fetch('https://api.trello.com/1/boards/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
@@ -46,6 +48,10 @@ async function deleteBoard(id) {
     getBoards();
 }
 
+/**
+ * Tábla létrehozása
+ */
+
 async function createBoard(name) {
     await fetch('https://api.trello.com/1/boards/?name=' + name + '&key=' + loggeduser.key + '&token=' + loggeduser.token, {
         method: 'POST'
@@ -61,10 +67,18 @@ async function createBoard(name) {
     getBoards();
 }
 
+/**
+ * Új tábla neve ablak
+ */
+
 function boardname() {
     document.getElementsByClassName("alert-info")[0].style.display = "block";
     document.getElementsByClassName("alert-info")[0].classList.add("typeBoardName");
 }
+
+/**
+ * Új tábla elmentése
+ */
 
 function saveboardname() {
     if (document.getElementById("name").value != "") {
@@ -77,27 +91,13 @@ function saveboardname() {
     }
 }
 
+/**
+ * Új tábla ablak bezárása
+ */
+
 function closesaveboardname() {
     document.getElementsByClassName("alert-info")[0].style.display = "none";
     document.getElementById("name").value = null;
-}
-
-async function openBoard(id) {
-    await fetch('https://api.trello.com/1/boards/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-        .then(response => {
-            console.log(
-                `Response: ${response.status} ${response.statusText}`
-            );
-            return response.text();
-        })
-        .then(text => localStorage.setItem("currentBoard", JSON.stringify(text)))
-        .then(console.log(JSON.parse(localStorage.getItem("currentBoard"))))
-        .catch(err => console.error(err));
 }
 
 function editBoardDialog() {
@@ -107,6 +107,10 @@ function editBoardDialog() {
 async function editBoard() {
 
 }
+
+/**
+ * Tábla megnyitása
+ */
 
 async function openBoard(id, thiselement) {
     let openedboard;
@@ -129,6 +133,10 @@ async function openBoard(id, thiselement) {
         .catch(err => console.error(err));
     megjelenit(openedboard, thiselement.parentElement.parentElement.querySelector("h5").textContent);
 }
+
+/**
+ * Tábla megjelenítése
+ */
 
 function megjelenit(data, title) {
     let container = document.querySelector("#lists>.row");
@@ -155,6 +163,10 @@ function megjelenit(data, title) {
         listIndex += 1;
     });
 }
+
+/**
+ * Kártyák megjelenítése
+ */
 
 function cards(data, list) {
     data.forEach(card => {
