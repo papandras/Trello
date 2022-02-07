@@ -221,6 +221,7 @@ function megjelenit(data, title) {
         colcount = 3;
     }
     data.forEach(list => {
+        console.log(list);
         let col = document.createElement("div");
         col.classList.add("col", `col-${colcount}`);
         let div = document.createElement("div");
@@ -230,6 +231,14 @@ function megjelenit(data, title) {
         h2.style.backgroundColor = "grey"
         div.classList.add("list");
         div.id = listIndex;
+        let a = document.createElement("button");
+        a.id = list.id;
+        a.setAttribute("onclick", `editListTitle(this.id)`);
+        let img = document.createElement("img");
+        img.setAttribute("src", "https://i.pinimg.com/originals/9c/d4/56/9cd456422c28ea2fb095b5707891670f.png");
+        img.style.width = "30px";
+        a.appendChild(img);
+        col.appendChild(a);
         col.appendChild(div);
         container.appendChild(col);
         fetch(`https://api.trello.com/1/lists/` + list.id + `/cards?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => cards(data, col));
@@ -258,7 +267,6 @@ function megjelenit(data, title) {
 function cards(data, list) {
     let index = 0;
     data.forEach(card => {
-        console.log(card);
         let div = document.createElement("div");
         div.classList.add("card");
         let text = document.createElement("h5");
@@ -276,6 +284,11 @@ function cards(data, list) {
     });
 }
 
+/**
+ * Tábla nevének szerkesztése
+ * @param {*} name 
+ */
+
 
 async function updateBoard(name) {
     await fetch('https://api.trello.com/1/boards/?name=' + name + '&key=' + loggeduser.key + '&token=' + loggeduser.token, {
@@ -290,4 +303,24 @@ async function updateBoard(name) {
         .then(text => console.log(text))
         .catch(err => console.error(err));
     getBoards();
+}
+
+async function editListTitle(id) {
+    let newname = prompt("Adja meg az oszlop új nevét!");
+    const data = { name: newname };
+    fetch('https://api.trello.com/1/lists/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
 }
