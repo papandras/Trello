@@ -231,14 +231,22 @@ function megjelenit(data, title) {
         h2.style.backgroundColor = "grey"
         div.classList.add("list");
         div.id = listIndex;
-        let a = document.createElement("button");
-        a.id = list.id;
-        a.setAttribute("onclick", `editListTitle(this.id)`);
+        let edit = document.createElement("button");
+        edit.id = list.id;
+        edit.setAttribute("onclick", `editListTitle(this.id)`);
         let img = document.createElement("img");
         img.setAttribute("src", "https://i.pinimg.com/originals/9c/d4/56/9cd456422c28ea2fb095b5707891670f.png");
-        img.style.width = "30px";
-        a.appendChild(img);
-        col.appendChild(a);
+        img.style.height = "30px";
+        edit.appendChild(img);
+        col.appendChild(edit);
+        let archive = document.createElement("button");
+        archive.id = list.id;
+        archive.setAttribute("onclick", `archiveList(this.id)`);
+        img = document.createElement("img");
+        img.setAttribute("src", "https://static.wixstatic.com/media/2cd43b_ae75124911964257b9d6303a01aef684~mv2.png/v1/fill/w_320,h_320,q_90/2cd43b_ae75124911964257b9d6303a01aef684~mv2.png");
+        img.style.height = "30px";
+        archive.appendChild(img);
+        col.appendChild(archive);
         col.appendChild(div);
         container.appendChild(col);
         fetch(`https://api.trello.com/1/lists/` + list.id + `/cards?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => cards(data, col));
@@ -314,6 +322,20 @@ async function editListTitle(id) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+}
+
+async function archiveList(id) {
+    await fetch('https://api.trello.com/1/lists/' + id + '/closed'+ '?key=' + loggeduser.key + '&token=' + loggeduser.token + '&value=' + true, {
+        method: 'PUT',
     })
         .then(response => {
             console.log(
