@@ -35,12 +35,15 @@ async function deleteBoard(id) {
     await fetch('https://api.trello.com/1/boards/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
         method: 'DELETE'
     })
-    .then(response => {
-        console.log(
+        .then(response => {
+            console.log(
             `Response: ${response.status} ${response.statusText}`
         );
         return response.text();
     })
+    .then(text => console.log(text))
+    .catch(err => console.error(err));
+    getBoards();
 }
 
 async function createBoard(name) {
