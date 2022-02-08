@@ -206,7 +206,7 @@ async function openBoard(id, thiselement) {
             //console.log(text)
         })
         .catch(err => console.error(err));
-    megjelenit(openedboard, thiselement.parentElement.parentElement.querySelector("h5").textContent);
+    megjelenit(openedboard, thiselement.parentElement.parentElement.querySelector("h5").textContent, id);
 }
 
 /**
@@ -215,7 +215,7 @@ async function openBoard(id, thiselement) {
  * @param {*} title 
  */
 
-function megjelenit(data, title) {
+function megjelenit(data, title, id) {
     let container = document.querySelector("#lists>.row");
     container.innerHTML = null;
     document.querySelector("#lists").style.display = "block";
@@ -224,6 +224,18 @@ function megjelenit(data, title) {
     h1.classList.add("text-center", "text-dark");
     h1.innerHTML = title;
     container.appendChild(h1);
+
+    let edit = document.createElement("a");
+    let ujlista = document.createElement("a");
+    ujlista.id = id;
+    ujlista.setAttribute("onclick", `addNewList(this.id)`);
+    let img = document.createElement("img");
+    img.setAttribute("src", "https://www.clipartmax.com/png/middle/41-410376_add-item-comments-add-icon-png-white.png");
+    img.style.height = "30px";
+    ujlista.appendChild(img);
+    ujlista.classList.add("float-end");
+
+    h1.appendChild(ujlista);
     container.appendChild(document.createElement("hr"));
     let listIndex = 0;
     let colcount = Math.round(12 / data.length);
@@ -231,7 +243,6 @@ function megjelenit(data, title) {
         colcount = 3;
     }
     data.forEach(list => {
-        console.log(list);
         let col = document.createElement("div");
         col.classList.add("col", `col-${colcount}`);
         let div = document.createElement("div");
@@ -282,6 +293,22 @@ function megjelenit(data, title) {
     container.appendChild(buttonrow);
 }
 
+async function addNewList(id) {
+    let name = prompt("Add meg a lista nevét")
+    await fetch(`https://api.trello.com/1/lists?name=${name}&idBoard=${id}&key=${loggeduser.key}&token=${loggeduser.token}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+        openBoard(obj.id, obj.element);
+}
+
 /**
  * Kártyák megjelenítése
  * @param {*} data 
@@ -291,7 +318,6 @@ function megjelenit(data, title) {
 function cards(data, list, listId) {
     let index = 0;
     data.forEach(card => {
-        console.log(card);
         div = document.createElement("div");
         div.classList.add("card");
         let text = document.createElement("h5");
@@ -339,6 +365,11 @@ function cards(data, list, listId) {
 
 }
 
+/**
+ * Kártya szerkesztése
+ * @param {*} id 
+ */
+
 async function editCardTitle(id) {
     let content = prompt("Adja meg a kártya új tartalmát!");
     const data = { name: content };
@@ -360,6 +391,11 @@ async function editCardTitle(id) {
     openBoard(obj.id, obj.element);
 }
 
+/**
+ * Kártya törlése
+ * @param {*} id 
+ */
+
 function archiveCard(id) {
     fetch(`https://api.trello.com/1/cards/${id}?key=${loggeduser.key}&token=${loggeduser.token}`, {
         method: 'DELETE'
@@ -372,8 +408,13 @@ function archiveCard(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
-        openBoard(obj.id, obj.element);
+    openBoard(obj.id, obj.element);
 }
+
+/**
+ * Kártya hozzáadása
+ * @param {*} id 
+ */
 
 async function addCard(id) {
     let content = prompt("Adja meg a kártya tartalmát!");
@@ -418,6 +459,11 @@ async function updateBoard(name) {
     getBoards();
 }
 
+/**
+ * Lista címének szerkesztése
+ * @param {*} id 
+ */
+
 async function editListTitle(id) {
     let newname = prompt("Adja meg az oszlop új nevét!");
     const data = { name: newname };
@@ -438,6 +484,11 @@ async function editListTitle(id) {
         .catch(err => console.error(err));
     openBoard(obj.id, obj.element);
 }
+
+/**
+ * Lista törlése
+ * @param {*} id 
+ */
 
 async function archiveList(id) {
     await fetch('https://api.trello.com/1/lists/' + id + '/closed' + '?key=' + loggeduser.key + '&token=' + loggeduser.token + '&value=' + true, {
