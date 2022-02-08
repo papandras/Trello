@@ -80,8 +80,15 @@ async function deleteBoard(id) {
  */
 
 async function createBoard(name) {
+    let select = document.getElementById("mySelect");
+    let i = select.selectedIndex;
+
     await fetch('https://api.trello.com/1/boards/?name=' + name + '&key=' + loggeduser.key + '&token=' + loggeduser.token, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prefs_background: select.options[i].value })
     })
         .then(response => {
             console.log(
@@ -176,7 +183,7 @@ function closeEditBoard() {
  * @param {*} thiselement 
  */
 
-let obj = {id: null, element: null};
+let obj = { id: null, element: null };
 
 async function openBoard(id, thiselement) {
     obj.id = id;
@@ -283,9 +290,9 @@ function megjelenit(data, title) {
 
 function cards(data, list, listId) {
     let index = 0;
+    console.log(data.length);
     data.forEach(card => {
-        console.log(card);
-        let div = document.createElement("div");
+        div = document.createElement("div");
         div.classList.add("card");
         let text = document.createElement("h5");
         text.innerHTML = card.name;
@@ -295,39 +302,38 @@ function cards(data, list, listId) {
         if (index == 0) {
             div.classList.add("elsoKartya");
         }
-        if (index == data.length - 1) {
-            div.classList.add("utolsoKartya");
-            let btn = document.createElement("a");
-            btn.classList.add("btn", "btn-secondary");
-            btn.innerHTML = "Új kártya";
-            btn.id = listId;
-            btn.setAttribute("onclick", "addCard(this.id)");
-            list.appendChild(btn);
-        }
         ++index;
     });
+
+    let btn = document.createElement("a");
+    btn.classList.add("btn", "btn-secondary", "mb-3");
+    btn.innerHTML = "Új kártya";
+    btn.id = listId;
+    btn.setAttribute("onclick", "addCard(this.id)");
+    list.appendChild(btn);
+
 }
 
-async function addCard(id){
+async function addCard(id) {
     let content = prompt("Adja meg a kártya tartalmát!");
     const data = { name: content };
-    await fetch('https://api.trello.com/1/cards?idList='+id + `&key=${loggeduser.key}&token=${loggeduser.token}`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data),
-})
-  .then(response => {
-    console.log(
-      `Response: ${response.status} ${response.statusText}`
-    );
-    return response.json();
-  })
-  .then(text => console.log(text))
-  .catch(err => console.error(err));
+    await fetch('https://api.trello.com/1/cards?idList=' + id + `&key=${loggeduser.key}&token=${loggeduser.token}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.json();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
 
-  openBoard(obj.id, obj.element);
+    openBoard(obj.id, obj.element);
 }
 
 /**
@@ -369,11 +375,11 @@ async function editListTitle(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
-        openBoard(obj.id, obj.element);
+    openBoard(obj.id, obj.element);
 }
 
 async function archiveList(id) {
-    await fetch('https://api.trello.com/1/lists/' + id + '/closed'+ '?key=' + loggeduser.key + '&token=' + loggeduser.token + '&value=' + true, {
+    await fetch('https://api.trello.com/1/lists/' + id + '/closed' + '?key=' + loggeduser.key + '&token=' + loggeduser.token + '&value=' + true, {
         method: 'PUT',
     })
         .then(response => {
@@ -384,5 +390,9 @@ async function archiveList(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
-        openBoard(obj.id, obj.element);
+    openBoard(obj.id, obj.element);
+}
+
+for (let i = 0; i < document.getElementsByTagName("option").length; ++i) {
+    document.getElementsByTagName("option")[i].style.backgroundColor = document.getElementsByTagName("option")[i].value;
 }
