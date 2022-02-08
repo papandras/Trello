@@ -99,3 +99,7 @@ h5{
     border-right: 2px solid green;
     border-bottom: 2px solid green;
 }
+
+img{
+    margin: 5px;
+}

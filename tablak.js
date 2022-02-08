@@ -176,7 +176,11 @@ function closeEditBoard() {
  * @param {*} thiselement 
  */
 
+let obj = {id: null, element: null};
+
 async function openBoard(id, thiselement) {
+    obj.id = id;
+    obj.element = thiselement;
     let openedboard;
     await fetch(`https://api.trello.com/1/boards/` + id + `/lists?key=${loggeduser.key}&token=${loggeduser.token}`, {
         method: 'GET',
@@ -215,7 +219,6 @@ function megjelenit(data, title) {
     container.appendChild(h1);
     container.appendChild(document.createElement("hr"));
     let listIndex = 0;
-    console.log(Math.round(12 / data.length));
     let colcount = Math.round(12 / data.length);
     if (colcount < 3) {
         colcount = 3;
@@ -231,31 +234,31 @@ function megjelenit(data, title) {
         h2.style.backgroundColor = "grey"
         div.classList.add("list");
         div.id = listIndex;
-        let edit = document.createElement("button");
+        let edit = document.createElement("a");
         edit.id = list.id;
         edit.setAttribute("onclick", `editListTitle(this.id)`);
         let img = document.createElement("img");
-        img.setAttribute("src", "https://i.pinimg.com/originals/9c/d4/56/9cd456422c28ea2fb095b5707891670f.png");
+        img.setAttribute("src", "https://www.pngfind.com/pngs/m/275-2755033_edit-png-file-on-phone-svg-edit-icon.png");
         img.style.height = "30px";
         edit.appendChild(img);
         edit.classList.add("float-end");
         edit.style.position = "relative";
         edit.style.bottom = "4px";
         h2.appendChild(edit);
-        let archive = document.createElement("button");
+        let archive = document.createElement("a");
         archive.id = list.id;
         archive.setAttribute("onclick", `archiveList(this.id)`);
         archive.classList.add("float-end");
         archive.style.position = "relative";
         archive.style.bottom = "4px";
         img = document.createElement("img");
-        img.setAttribute("src", "https://static.wixstatic.com/media/2cd43b_ae75124911964257b9d6303a01aef684~mv2.png/v1/fill/w_320,h_320,q_90/2cd43b_ae75124911964257b9d6303a01aef684~mv2.png");
+        img.setAttribute("src", "https://banner2.cleanpng.com/20191112/jgu/transparent-solid-web-buttons-icon-trash-icon-delete-icon-5dcb353c1c3720.1008941715735985241156.jpg");
         img.style.height = "30px";
         archive.appendChild(img);
         h2.appendChild(archive);
         col.appendChild(div);
         container.appendChild(col);
-        fetch(`https://api.trello.com/1/lists/` + list.id + `/cards?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => cards(data, col));
+        fetch(`https://api.trello.com/1/lists/` + list.id + `/cards?key=${loggeduser.key}&token=${loggeduser.token}`).then(response => response.json()).then(data => cards(data, col, list.id));
         listIndex += 1;
     });
     closeButton = document.createElement("a");
@@ -278,9 +281,10 @@ function megjelenit(data, title) {
  * @param {*} list 
  */
 
-function cards(data, list) {
+function cards(data, list, listId) {
     let index = 0;
     data.forEach(card => {
+        console.log(card);
         let div = document.createElement("div");
         div.classList.add("card");
         let text = document.createElement("h5");
@@ -293,9 +297,37 @@ function cards(data, list) {
         }
         if (index == data.length - 1) {
             div.classList.add("utolsoKartya");
+            let btn = document.createElement("a");
+            btn.classList.add("btn", "btn-secondary");
+            btn.innerHTML = "Új kártya";
+            btn.id = listId;
+            btn.setAttribute("onclick", "addCard(this.id)");
+            list.appendChild(btn);
         }
         ++index;
     });
+}
+
+async function addCard(id){
+    let content = prompt("Adja meg a kártya tartalmát!");
+    const data = { name: content };
+    await fetch('https://api.trello.com/1/cards?idList='+id + `&key=${loggeduser.key}&token=${loggeduser.token}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data),
+})
+  .then(response => {
+    console.log(
+      `Response: ${response.status} ${response.statusText}`
+    );
+    return response.json();
+  })
+  .then(text => console.log(text))
+  .catch(err => console.error(err));
+
+  openBoard(obj.id, obj.element);
 }
 
 /**
@@ -322,7 +354,7 @@ async function updateBoard(name) {
 async function editListTitle(id) {
     let newname = prompt("Adja meg az oszlop új nevét!");
     const data = { name: newname };
-    fetch('https://api.trello.com/1/lists/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
+    await fetch('https://api.trello.com/1/lists/' + id + '?key=' + loggeduser.key + '&token=' + loggeduser.token, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -337,6 +369,7 @@ async function editListTitle(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
+        openBoard(obj.id, obj.element);
 }
 
 async function archiveList(id) {
@@ -351,4 +384,5 @@ async function archiveList(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
+        openBoard(obj.id, obj.element);
 }
