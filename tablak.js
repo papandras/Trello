@@ -302,6 +302,9 @@ function cards(data, list, listId) {
         if (index == 0) {
             div.classList.add("elsoKartya");
         }
+        if (index == data.length-1) {
+            div.classList.add("utolsoKartya");
+        }
         ++index;
     });
 
