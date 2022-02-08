@@ -309,7 +309,7 @@ function cards(data, list, listId) {
         text.appendChild(document.createElement("br"));
         text.appendChild(edit);
         let archive = document.createElement("a");
-        archive.id = cards.id;
+        archive.id = card.id;
         archive.setAttribute("onclick", `archiveCard(this.id)`);
         archive.classList.add("float-end");
         img = document.createElement("img");
@@ -357,11 +357,22 @@ async function editCardTitle(id) {
         })
         .then(text => console.log(text))
         .catch(err => console.error(err));
-        openBoard(obj.id, obj.element);
+    openBoard(obj.id, obj.element);
 }
 
 function archiveCard(id) {
-    //
+    fetch(`https://api.trello.com/1/cards/${id}?key=${loggeduser.key}&token=${loggeduser.token}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+        openBoard(obj.id, obj.element);
 }
 
 async function addCard(id) {
