@@ -290,19 +290,41 @@ function megjelenit(data, title) {
 
 function cards(data, list, listId) {
     let index = 0;
-    console.log(data.length);
     data.forEach(card => {
+        console.log(card);
         div = document.createElement("div");
         div.classList.add("card");
         let text = document.createElement("h5");
         text.innerHTML = card.name;
         text.style.margin = "10px";
+
+        let edit = document.createElement("a");
+        edit.id = card.id;
+        edit.setAttribute("onclick", `editCardTitle(this.id)`);
+        let img = document.createElement("img");
+        img.setAttribute("src", "https://www.pngfind.com/pngs/m/275-2755033_edit-png-file-on-phone-svg-edit-icon.png");
+        img.style.height = "30px";
+        edit.appendChild(img);
+        edit.classList.add("float-end");
+        text.appendChild(document.createElement("br"));
+        text.appendChild(edit);
+        let archive = document.createElement("a");
+        archive.id = cards.id;
+        archive.setAttribute("onclick", `archiveCard(this.id)`);
+        archive.classList.add("float-end");
+        img = document.createElement("img");
+        img.setAttribute("src", "https://banner2.cleanpng.com/20191112/jgu/transparent-solid-web-buttons-icon-trash-icon-delete-icon-5dcb353c1c3720.1008941715735985241156.jpg");
+        img.style.height = "30px";
+        archive.appendChild(img);
+        text.appendChild(archive);
+
+
         div.appendChild(text);
         list.appendChild(div);
         if (index == 0) {
             div.classList.add("elsoKartya");
         }
-        if (index == data.length-1) {
+        if (index == data.length - 1) {
             div.classList.add("utolsoKartya");
         }
         ++index;
@@ -315,6 +337,31 @@ function cards(data, list, listId) {
     btn.setAttribute("onclick", "addCard(this.id)");
     list.appendChild(btn);
 
+}
+
+async function editCardTitle(id) {
+    let content = prompt("Adja meg a kártya új tartalmát!");
+    const data = { name: content };
+    await fetch(`https://api.trello.com/1/cards/${id}?key=${loggeduser.key}&token=${loggeduser.token}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            console.log(
+                `Response: ${response.status} ${response.statusText}`
+            );
+            return response.text();
+        })
+        .then(text => console.log(text))
+        .catch(err => console.error(err));
+        openBoard(obj.id, obj.element);
+}
+
+function archiveCard(id) {
+    //
 }
 
 async function addCard(id) {
